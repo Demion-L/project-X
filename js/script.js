@@ -1,4 +1,5 @@
-"use strict";
+
+'use strict';
 
 document.addEventListener('DOMContentLoaded', () => {
   const movieDB = {
@@ -17,7 +18,7 @@ const advertiser = document.querySelectorAll('.promo__adv img'),
       movieList = document.querySelectorAll('.promo__interactive-list'),
       addForm = document.querySelector('form.add'),
       addInput = addForm.querySelector('.adding__input'),
-      checkbox = addForm.querySelector('[type="checkbox"]'),
+      chekbox = addForm.querySelector('[type="checkbox"]'),
       title = poster.querySelector('.promo__title'),
       ratings = poster.querySelector('.promo__ratings'),
       promo = document.querySelectorAll('.promo__menu-list');
@@ -28,9 +29,7 @@ addForm.addEventListener('submit', (event) => {
 
   const newFilm = addInput.value;
   const favorite = checkbox.checked;
-
-  movieDB.movies.push(newFilm);
-});
+})
 
 advertiser.forEach(item => {
     item.remove();
@@ -52,5 +51,19 @@ movieDB.movies.sort();
 
 movieDB.movies.forEach((film, i) => {
     movieList.innerHTML +=`<li class="promo__interactive-item"> N${i + 1}${film}<div class="delete"></div></li>`;
-    });
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
