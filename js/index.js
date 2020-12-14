@@ -1,56 +1,109 @@
 "use strict";
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener("DOMContentLoaded", () => {
   const movieDB = {
     movies: [
-        "Логан",
-        "Лига справедливости",
-        "Ла-ла лэнд",
-        "Одержимость",
-        "Скотт Пилигрим против..."
+      "Супермен",
+      "Марсианин",
+      "Гренландия",
+      "Звездные войны",
+      "Ганнибал лектор"
     ]
-};
+  };
 
-const advertiser = document.querySelectorAll('.promo__adv img'),
-      poster = document.querySelector('.promo__bg'),
-      genre = poster.querySelector('.promo__genre'),
-      movieList = document.querySelectorAll('.promo__interactive-list'),
-      addForm = document.querySelector('form.add'),
-      addInput = addForm.querySelector('.adding__input'),
-      checkbox = addForm.querySelector('[type="checkbox"]'),
-      title = poster.querySelector('.promo__title'),
-      ratings = poster.querySelector('.promo__ratings'),
-      promo = document.querySelectorAll('.promo__menu-list');
-      
+  const advertiser = document.querySelectorAll(".promo__adv img"),
+    poster = document.querySelector(".promo__bg"),
+    genre = poster.querySelector(".promo__genre"),
+    movieList = document.querySelector(".promo__interactive-list"),
+    addForm = document.querySelector("form.add"),
+    addInput = addForm.querySelector(".adding__input"),
+    checkbox = addForm.querySelector('[type="checkbox"]'),
+    title = poster.querySelector(".promo__title"),
+    wrapper = document.querySelector(".promo__interactive"),
+    ratings = poster.querySelector(".promo__ratings"),
+    promo = document.querySelectorAll(".promo__menu-list");
 
-addForm.addEventListener('submit', (event) => {
-  event.preventDefault();
+  addForm.addEventListener("submit", (event) => {
+    event.preventDefault();
 
-  const newFilm = addInput.value;
-  const favorite = checkbox.checked;
+    let newFilm = addInput.value;
+    const favorite = checkbox.checked;
 
-  movieDB.movies.push(newFilm);
-});
+    if (newFilm) {
 
-advertiser.forEach(item => {
-    item.remove();
-});
+      if(newFilm.length > 21) {
+        newFilm = `${newFilm.substring(0, 22)}...`;
+      }
 
-genre.textContent = 'Мелодрамма';
+      if (favorite) {
+        console.log('It is favorite!');
+      }
 
-genre.style.fontSize = '30px';
+    movieDB.movies.push(newFilm);
+    sortArr(movieDB.movies);
 
-title.textContent = 'Аргонианин';
+    createMovieList(movieDB.movies, movieList);
+    }
 
-title.insertAdjacentHTML('afterbegin','<div> Привет хохохо!!! </div>');
+    event.target.reset();
+  });
 
-poster.style.backgroundImage = 'url(./img/bg.jpg)';
-
-movieList[0].innerHTML = '';
-
-movieDB.movies.sort();
-
-movieDB.movies.forEach((film, i) => {
-    movieList.innerHTML +=`<li class="promo__interactive-item"> N${i + 1}${film}<div class="delete"></div></li>`;
+  const deleteAdv = (arr) => {
+    arr.forEach((item) => {
+      item.remove();
     });
+  };
+
+  const makeChanges = () => {
+    genre.textContent = "Мелодрамма";
+
+    genre.style.fontSize = "30px";
+
+    title.textContent = "Аргонианин";
+
+    title.insertAdjacentHTML("afterbegin", "<div> Привет хохохо!!! </div>");
+
+    poster.style.backgroundImage = "url(./img/bg.jpg)";
+  };
+
+  const sortArr = (arr) => {
+    arr.sort();
+  };
+
+  function createMovieList(films, parent) {
+    parent.innerHTML = "";
+    sortArr(films);
+
+    films.forEach((film, i) => {
+      parent.innerHTML += `
+    <li class="promo__interactive-item"> 
+      N${i + 1} ${film}
+        <div class="delete"></div>
+    </li>
+      `;
+    });
+
+    document.querySelectorAll('.delete').forEach((btn, i) => {
+      btn.addEventListener('click', () => {
+        btn.parentElement.remove();   
+        movieDB.movies.splice(i, 1);
+
+        createMovieList(films, parent);
+      });
+    });
+  }
+
+  deleteAdv(advertiser);
+  makeChanges();
+  createMovieList(movieDB.movies, movieList);
+
+
+  for (let elements of wrapper.childNodes) {
+    if (elements.nodeName == "#text") {
+      continue;
+    }
+    console.log(elements);
+  }
+
 });
+
